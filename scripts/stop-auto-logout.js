@@ -1,3 +1,5 @@
 setTimeout(() => {
-  clearInterval(timer);
+  if (timer) {
+    clearInterval(timer);
+  }
 }, 2000);
