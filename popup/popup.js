@@ -1,3 +1,5 @@
+import { read } from "./node_modules/xlsx/xlsx.mjs";
+
 var getDataBtn = document.querySelector("button#getdata");
 
 var downloadBtn = document.querySelector("button#download");
@@ -6,48 +8,48 @@ var text = document.querySelector("#text");
 
 var data = null;
 
-getDataBtn.addEventListener("click", async () => {
-  const [tab] = await chrome.tabs.query({
-    active: true,
-    lastFocusedWindow: true,
-  });
+// getDataBtn.addEventListener("click", async () => {
+//   const [tab] = await chrome.tabs.query({
+//     active: true,
+//     lastFocusedWindow: true,
+//   });
 
-  const response = await chrome.tabs.sendMessage(tab.id, {
-    getDate: true,
-  });
+//   const response = await chrome.tabs.sendMessage(tab.id, {
+//     getDate: true,
+//   });
 
-  data = response.data;
+//   data = response.data;
 
-  text.textContent = JSON.stringify(response.data, null, 2);
+//   text.textContent = JSON.stringify(response.data, null, 2);
 
-  downloadBtn.disabled = false;
-});
+//   downloadBtn.disabled = false;
+// });
 
-downloadBtn.addEventListener("click", async () => {
-  if (data) {
-    var csvData = data
-      .map(({ rank, title }) => [rank, title].map((v) => `"${v}"`).join(","))
-      .join("\r\n");
+// downloadBtn.addEventListener("click", async () => {
+//   if (data) {
+//     var csvData = data
+//       .map(({ rank, title }) => [rank, title].map((v) => `"${v}"`).join(","))
+//       .join("\r\n");
 
-    const encodeData = new TextEncoder("big5", {
-      NONSTANDARD_allowLegacyEncoding: true,
-    }).encode(csvData);
+//     const encodeData = new TextEncoder("big5", {
+//       NONSTANDARD_allowLegacyEncoding: true,
+//     }).encode(csvData);
 
-    var objUrl = URL.createObjectURL(
-      new Blob([encodeData], { type: "text/csv" })
-    );
+//     var objUrl = URL.createObjectURL(
+//       new Blob([encodeData], { type: "text/csv" })
+//     );
 
-    try {
-      await chrome.downloads.download({
-        url: objUrl,
-        filename: "data.csv",
-        saveAs: true,
-      });
-    } finally {
-      URL.revokeObjectURL(objUrl);
-    }
-  }
-});
+//     try {
+//       await chrome.downloads.download({
+//         url: objUrl,
+//         filename: "data.csv",
+//         saveAs: true,
+//       });
+//     } finally {
+//       URL.revokeObjectURL(objUrl);
+//     }
+//   }
+// });
 
 async function init() {
   const [tab] = await chrome.tabs.query({
@@ -66,4 +68,18 @@ async function init() {
   }
 }
 
-init();
+// init();
+
+fetch("./業務客戶對照表.xlsx")
+  .then((r) => r.arrayBuffer())
+  .then((r) => {
+    console.log((r))
+
+    // const t = new TextDecoder("big5").decode(r);
+
+    // console.log(t)
+
+    var workbook = read(r);
+
+    console.log(workbook)
+  });

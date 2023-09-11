@@ -10,8 +10,14 @@
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
-      "matches": ["https://news.ycombinator.com/*"]
+      "matches": ["https://apxm-adv.chuan-lian.com.tw/*"]
     }
   ],
-  "permissions": ["activeTab", "downloads"]
+  "permissions": ["activeTab", "downloads"],
+  "web_accessible_resources": [
+    {
+      "resources": ["scripts/stop-auto-logout.js"],
+      "matches": ["https://apxm-adv.chuan-lian.com.tw/*"]
+    }
+  ]
 }
