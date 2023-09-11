@@ -1,5 +1,3 @@
-setTimeout(() => {
-  if (timer) {
-    clearInterval(timer);
-  }
-}, 2000);
+if (timer) {
+  clearInterval(timer);
+}

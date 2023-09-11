@@ -4,14 +4,17 @@ var s = document.createElement("script");
 
 s.src = chrome.runtime.getURL("scripts/stop-auto-logout.js");
 
-s.onload = function () {
-  setTimeout(() => {
-    this.remove();
-  }, 3000);
-};
+// s.onload = function () {
+//   setTimeout(() => {
+//     this.remove();
+//   }, 3000);
+// };
 
 // see also "Dynamic values in the injected code" section in this answer
-(document.head || document.documentElement).appendChild(s);
+
+setTimeout(() => {
+  document.body.appendChild(s);
+}, 5000);
 
 // function getData() {
 //   var rows = document.querySelectorAll("tr.athing");
